@@ -11,12 +11,29 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { useState } from "react";
+import React, { useState } from "react";
 
 export default function SignUp() {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
+
+  async function handleSubmit(e: React.SubmitEvent) {
+    e.preventDefault();
+
+    setError("");
+    setLoading(true);
+
+    try {
+    } catch (err) {
+      console.log(err);
+      setError("An unexpected error occurred");
+    } finally {
+      setLoading(false);
+    }
+  }
   return (
     <div className="flex min-h-[calc(100vh-4rem)] items-center justify-center bg-white p-4">
       <Card className="w-full max-w-md border-gray-200 shadow-lg">
@@ -28,7 +45,7 @@ export default function SignUp() {
             Create an account to start tracking your job applications
           </CardDescription>
         </CardHeader>
-        <form>
+        <form onSubmit={handleSubmit}>
           <CardContent className="space-y-4">
             <div className="space-y-2">
               <Label htmlFor="name" className="text-gray-700">
