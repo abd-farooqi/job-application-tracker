@@ -1,16 +1,27 @@
+"use client";
+
 import { Briefcase } from "lucide-react";
 import Link from "next/link";
 import { Button } from "./ui/button";
-import { getSession } from "@/lib/auth/auth";
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuGroup,
+  DropdownMenuLabel,
+  DropdownMenuTrigger,
+} from "./ui/dropdown-menu";
+import { Avatar, AvatarFallback } from "./ui/avatar";
+import SignOut from "./sign-out-btn";
+import { useSession } from "@/lib/auth/auth-client";
 
-export default async function Navbar() {
-  const session = await getSession();
+export default function Navbar() {
+  const { data: session } = useSession();
   return (
     <nav className="border-b border-gray-200 bg-white">
-      <div className="container mx-auto flex height-16 items-center p-4 justify-between">
+      <div className="container mx-auto flex h-16 items-center p-4 justify-between">
         <Link
           href="/"
-          className="flex items-center gap-2 text-xl font-semibold text-primary!"
+          className="flex items-center gap-2 text-xl font-semibold text-primary"
         >
           <Briefcase />
           Job Tracker
@@ -26,6 +37,26 @@ export default async function Navbar() {
                   Dashboard
                 </Button>
               </Link>
+              <DropdownMenu>
+                <DropdownMenuTrigger>
+                  <Avatar>
+                    <AvatarFallback className="bg-primary text-white">
+                      {session.user.name[0].toUpperCase()}
+                    </AvatarFallback>
+                  </Avatar>
+                </DropdownMenuTrigger>
+                <DropdownMenuContent className="min-w-56">
+                  <DropdownMenuGroup>
+                    <DropdownMenuLabel>
+                      <div>
+                        <p>{session.user.name}</p>
+                        <p>{session.user.email}</p>
+                      </div>
+                    </DropdownMenuLabel>
+                    <SignOut />
+                  </DropdownMenuGroup>
+                </DropdownMenuContent>
+              </DropdownMenu>
             </>
           ) : (
             <>
